@@ -31,6 +31,7 @@ namespace MouseApp
 
             KeyboardHook keyboardHook = new KeyboardHook();
             keyboardHook.KeyDown += new KeyboardHook.KeyboardHookCallback(KeyboardHook_KeyDown);
+            keyboardHook.KeyUp += new KeyboardHook.KeyboardHookCallback(KeyboardHook_KeyUp);
             keyboardHook.Install();
 
             /*
@@ -52,6 +53,20 @@ namespace MouseApp
             }*/
 
             //WindowHook.DoStartWatcher();
+        }
+
+        private void KeyboardHook_KeyUp(KeyboardHook.VKeys key)
+        {
+            p.x = Cursor.Position.X;
+            p.y = Cursor.Position.Y;
+            switch (key)
+            {
+                case KeyboardHook.VKeys.SPACE:
+                    ClickOnPointTool.ClickOff(this.Handle, new Point(p.x, p.y));
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void KeyboardHook_KeyDown(KeyboardHook.VKeys key)
@@ -76,7 +91,8 @@ namespace MouseApp
                     p.x += step;
                     break;
                 case KeyboardHook.VKeys.SPACE:
-                    ClickOnPointTool.ClickOnPoint(this.Handle,new Point(p.x , p.y));
+                    //ClickOnPointTool.ClickOnPoint(this.Handle,new Point(p.x , p.y));
+                    ClickOnPointTool.ClickOn(this.Handle,new Point(p.x , p.y));
                     break;
                 default:
                     break;

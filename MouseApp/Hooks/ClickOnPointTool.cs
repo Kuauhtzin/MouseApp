@@ -66,5 +66,36 @@ namespace MouseApp.Hooks
             Cursor.Position = oldPos;
         }
 
+        internal static void ClickOn(IntPtr handle, Point point)
+        {
+            var oldPos = Cursor.Position;
+
+            Cursor.Position = new Point(point.X, point.Y);
+
+            var inputMouseDown = new INPUT();
+            inputMouseDown.Type = 0; /// input type mouse
+            inputMouseDown.Data.Mouse.Flags = 0x0002; /// left button down
+            
+            var inputs = new INPUT[] { inputMouseDown };
+            SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(INPUT)));
+
+            Cursor.Position = oldPos;
+        }
+
+        internal static void ClickOff(IntPtr handle, Point point)
+        {
+            var oldPos = Cursor.Position;
+
+            Cursor.Position = new Point(point.X, point.Y);
+            
+            var inputMouseUp = new INPUT();
+            inputMouseUp.Type = 0; /// input type mouse
+            inputMouseUp.Data.Mouse.Flags = 0x0004; /// left button up
+
+            var inputs = new INPUT[] { inputMouseUp };
+            SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(INPUT)));
+
+            Cursor.Position = oldPos;
+        }
     }
 }
